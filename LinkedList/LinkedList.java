@@ -39,6 +39,26 @@ public class LinkedList {
         }
         this.tamanho--;
     }
+    
+    public void set(int index, int valor) {
+        No atual = cabeca;
+
+        if (index < 0 || index >= size()) {
+            System.out.println("Indice invalido ou lista vazia.\n");
+            return;
+        }
+        
+        if (cabeca == null || rabo == null) {
+            cabeca.setValor(valor);
+            rabo.setValor(valor);
+        } else {
+
+            for (int i = 0; i < index - 1; i++) {
+                atual = atual.getProximo();
+            }
+        }
+        atual.setValor(valor);
+    }
 
     public void removeIndex(int index) {
         if (index < 0 || index >= size()) {
@@ -69,7 +89,7 @@ public class LinkedList {
         System.out.println("Indice " + index + " foi removido com sucesso.\n");
     }
 
-    public void removePrimeiroValor(int valor) {
+    public void removePrimeiroValorCorrespondente(int valor) {
         if (size() == 0) {
             System.out.println("Não há valor na lista.\n");
             return;
@@ -125,12 +145,41 @@ public class LinkedList {
         System.out.println("O valor do No é: " + atual.getValor() + "\n");
     }
 
-    public void getFirst(){
+    public void getFirst() {
         System.out.println("O primeiro valor é: " + cabeca);
     }
 
-    public void getLast(){
+    public void getLast() {
         System.out.println("O ultimo valor é: " + rabo);
+    }
+
+    public boolean contains(int valor) {
+        No atual = cabeca;
+
+        if (cabeca.getValor() == valor) {
+            return true;
+        }
+
+        for (int i = 0; i < size(); i++) {
+            if (valor == atual.getProximo().getValor()) {
+                return true;
+            }
+            atual = atual.getProximo();
+        }
+        return false;
+    }
+
+    public int indexOf(int valor) {
+        No atual = cabeca;
+
+        for (int i = 0; i < size(); i++) {
+            if (valor == atual.getValor()) {
+                return i;
+            }
+            atual = atual.getProximo();
+        }
+
+        return -1;
     }
 
     public void mostrarLista() {
