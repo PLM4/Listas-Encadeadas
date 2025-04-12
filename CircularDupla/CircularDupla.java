@@ -1,12 +1,12 @@
-package CircularSimples;
+package CircularDupla;
 
-public class LinkedListCircular {
+public class CircularDupla {
 
     private No cabeca;
     private No rabo;
     private int tamanho;
 
-    public LinkedListCircular() {
+    public CircularDupla() {
         cabeca = null;
         rabo = null;
         this.tamanho = 0;
@@ -14,13 +14,12 @@ public class LinkedListCircular {
 
     public void add(int valor) {
         No novoNo = new No(valor);
-        if (isEmpty()) {
+        if (cabeca == null) {
             cabeca = novoNo;
             rabo = novoNo;
-            cabeca.setProximo(cabeca);
         } else {
             rabo.setProximo(novoNo);
-            novoNo.setProximo(cabeca);
+            novoNo.setAnterior(rabo);
             rabo = novoNo;
         }
         tamanho += 1;
@@ -35,7 +34,7 @@ public class LinkedListCircular {
         System.out.println("O valor " + cabeca.getValor() + " foi removido com sucesso.\n");
 
         cabeca = cabeca.getProximo();
-        rabo.setProximo(cabeca);
+        cabeca.setAnterior(null);
 
         if (cabeca == null) {
             rabo = null;
@@ -44,26 +43,23 @@ public class LinkedListCircular {
     }
 
     public void set(int index, int valor) {
-        if (size() == 0) {
-            System.out.println("Lista vazia.\n");
-            return;
-        }
-    
-        if (index < 0 || index >= size()) {
-            System.out.println("Indice invalido.\n");
-            return;
-        }
-    
         No atual = cabeca;
-    
-        for (int i = 0; i < index; i++) {
-            atual = atual.getProximo();
+
+        if (index < 0 || index >= size()) {
+            System.out.println("Indice invalido ou lista vazia.\n");
+            return;
         }
-        
+
+        if (cabeca == null || rabo == null) {
+            cabeca.setValor(valor);
+            rabo.setValor(valor);
+        } else {
+            for (int i = 0; i < index - 1; i++) {
+                atual = atual.getProximo();
+            }
+        }
         atual.setValor(valor);
-        System.out.println("Valor no indice " + index + " atualizado para valor: " + valor + "\n");
     }
-    
 
     public void removeIndex(int index) {
         if (index < 0 || index >= size()) {
@@ -73,7 +69,9 @@ public class LinkedListCircular {
 
         if (index == 0) {
             cabeca = cabeca.getProximo();
-            if (cabeca == null) {
+            if (cabeca != null) {
+                cabeca.setAnterior(null);
+            } else {
                 rabo = null;
             }
         } else {
@@ -83,11 +81,17 @@ public class LinkedListCircular {
                 atual = atual.getProximo();
             }
 
-            No removerNo = atual.getProximo();
-            atual.setProximo(removerNo.getProximo());
+            No anterior = atual.getAnterior();
+            No proximo = atual.getProximo();
 
-            if (removerNo == rabo) {
-                rabo = atual;
+            if (anterior != null) {
+                anterior.setProximo(proximo);
+            }
+
+            if (proximo != null) {
+                proximo.setAnterior(anterior);
+            } else {
+                rabo = anterior;
             }
         }
         this.tamanho--;
@@ -102,25 +106,39 @@ public class LinkedListCircular {
 
         if (cabeca.getValor() == valor) {
             cabeca = cabeca.getProximo();
-            rabo.setProximo(cabeca);
-            if (cabeca == null) {
+            if (cabeca != null) {
+                cabeca.setAnterior(null);
+            } else {
                 rabo = null;
             }
-        } else {
-            No atual = cabeca;
-
-            for (int i = 0; i < size() - 1; i++) {
-                if (valor == atual.getProximo().getValor()) {
-                    No removerNo = atual.getProximo();
-                    atual.setProximo(removerNo.getProximo());
-                    break;
-                }
-                atual = atual.getProximo();
-            }
-
+            this.tamanho--;
+            System.out.println("O valor " + valor + " foi removido com sucesso.\n");
+            return;
         }
-        this.tamanho--;
-        System.out.println("O valor " + valor + " foi removido com sucesso.\n");
+
+        No atual = cabeca;
+
+        while (atual != null) {
+            if (valor == atual.getValor()) {
+                No anterior = atual.getAnterior();
+                No proximo = atual.getProximo();
+
+                if (anterior != null) {
+                    anterior.setProximo(proximo);
+                }
+
+                if (proximo != null) {
+                    proximo.setAnterior(anterior);
+                } else {
+                    rabo = anterior;
+                }
+                this.tamanho--;
+                System.out.println("O valor " + valor + " foi removido com sucesso.\n");
+                return;
+            }
+            atual = atual.getProximo();
+        }
+        System.out.println("Valor não encontrado na lista.\n");
     }
 
     public int size() {
@@ -196,18 +214,11 @@ public class LinkedListCircular {
     }
 
     public void mostrarLista() {
-        if (isEmpty()) {
-            System.out.println("Não há valor na lista.\n");
-            return;
-        }
-
         No atual = cabeca;
 
-        do {
-            System.out.printf(atual.getValor() + " -> ");
+        for (int i = 0; i < size(); i++) {
+            System.out.println(atual);
             atual = atual.getProximo();
-        } while (atual != cabeca);
-
-        System.out.println("Volta ao começo");
+        }
     }
 }

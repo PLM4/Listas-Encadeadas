@@ -1,8 +1,8 @@
-import CircularSimples.LinkedListCircular;
+import CircularSimples.CircularSimples;
 
 public class Main {
     public static void main(String[] args) {
-        LinkedListCircular lista = new LinkedListCircular();
+        CircularSimples lista = new CircularSimples();
 
     }
 }
