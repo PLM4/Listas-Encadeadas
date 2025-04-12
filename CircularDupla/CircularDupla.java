@@ -220,4 +220,38 @@ public class CircularDupla {
         } while (atual != cabeca);
         System.out.println("Volta ao comeco da lista.\n");
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cabeca == null) ? 0 : cabeca.hashCode());
+        result = prime * result + ((rabo == null) ? 0 : rabo.hashCode());
+        result = prime * result + tamanho;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CircularDupla other = (CircularDupla) obj;
+        if (cabeca == null) {
+            if (other.cabeca != null)
+                return false;
+        } else if (!cabeca.equals(other.cabeca))
+            return false;
+        if (rabo == null) {
+            if (other.rabo != null)
+                return false;
+        } else if (!rabo.equals(other.rabo))
+            return false;
+        if (tamanho != other.tamanho)
+            return false;
+        return true;
+    }
 }
