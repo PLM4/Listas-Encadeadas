@@ -1,11 +1,13 @@
-package LinkedList;
+package DuplamenteEncadeada;
 
 public class No {
     private int valor;
+    private No anterior;
     private No proximo;
 
     public No(int valor) {
         this.valor = valor;
+        this.anterior = null;
         this.proximo = null;
     }
 
@@ -25,9 +27,19 @@ public class No {
         this.proximo = proximo;
     }
 
+    public No getAnterior() {
+        return anterior;
+    }
+
+    public void setAnterior(No anterior) {
+        this.anterior = anterior;
+    }
+
     @Override
     public String toString() {
-        return " \nNo [valor = " + valor + ", proximo -> " + proximo + "]\n";
+        return "No [valor=" + valor +
+                ", anterior= " + (anterior != null ? anterior.getValor() : "null") +
+                ", proximo= " + (proximo != null ? proximo.getValor() : "null") + "]\n";
     }
 
 }

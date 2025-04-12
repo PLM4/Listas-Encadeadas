@@ -1,13 +1,11 @@
-package AnteriorEProximo;
+package SimplesmenteEncadeada;
 
 public class No {
     private int valor;
-    private No anterior;
     private No proximo;
 
     public No(int valor) {
         this.valor = valor;
-        this.anterior = null;
         this.proximo = null;
     }
 
@@ -27,17 +25,9 @@ public class No {
         this.proximo = proximo;
     }
 
-    public No getAnterior(){
-        return anterior;
-    }
-
-    public void setAnterior(No anterior){
-        this.anterior = anterior;
-    }
-
     @Override
     public String toString() {
-        return "No [valor=" + valor + ", anterior=" + anterior + ", proximo=" + proximo + "]";
+        return " \nNo [valor = " + valor + ", proximo -> " + proximo + "]\n";
     }
 
 }
