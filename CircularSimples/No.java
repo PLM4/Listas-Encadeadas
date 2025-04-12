@@ -1,4 +1,4 @@
-package SimplesmenteEncadeada;
+package CircularSimples;
 
 public class No {
     private int valor;
@@ -28,7 +28,6 @@ public class No {
     @Override
     public String toString() {
         return " \nNo [valor = " + valor + 
-        ", proximo -> " + (proximo != null ? proximo.getValor(): "null") + "]\n";
-    }
-
+        ", proximo -> " + (proximo != null ? proximo.getValor(): "null") + "]\n";   
+}
 }

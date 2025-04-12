@@ -1,12 +1,12 @@
-package SimplesmenteEncadeada;
+package CircularSimples;
 
-public class LinkedList {
+public class LinkedListCircular {
 
     private No cabeca;
     private No rabo;
     private int tamanho;
 
-    public LinkedList() {
+    public LinkedListCircular() {
         cabeca = null;
         rabo = null;
         this.tamanho = 0;
@@ -14,11 +14,13 @@ public class LinkedList {
 
     public void add(int valor) {
         No novoNo = new No(valor);
-        if (cabeca == null) {
+        if (isEmpty()) {
             cabeca = novoNo;
             rabo = novoNo;
+            cabeca.setProximo(cabeca);
         } else {
             rabo.setProximo(novoNo);
+            novoNo.setProximo(cabeca);
             rabo = novoNo;
         }
         tamanho += 1;
@@ -33,32 +35,35 @@ public class LinkedList {
         System.out.println("O valor " + cabeca.getValor() + " foi removido com sucesso.\n");
 
         cabeca = cabeca.getProximo();
+        rabo.setProximo(cabeca);
 
         if (cabeca == null) {
             rabo = null;
         }
         this.tamanho--;
     }
-    
-    public void set(int index, int valor) {
-        No atual = cabeca;
 
-        if (index < 0 || index >= size()) {
-            System.out.println("Indice invalido ou lista vazia.\n");
+    public void set(int index, int valor) {
+        if (size() == 0) {
+            System.out.println("Lista vazia.\n");
             return;
         }
-        
-        if (cabeca == null || rabo == null) {
-            cabeca.setValor(valor);
-            rabo.setValor(valor);
-        } else {
-
-            for (int i = 0; i < index - 1; i++) {
-                atual = atual.getProximo();
-            }
+    
+        if (index < 0 || index >= size()) {
+            System.out.println("Indice invalido.\n");
+            return;
         }
+    
+        No atual = cabeca;
+    
+        for (int i = 0; i < index; i++) {
+            atual = atual.getProximo();
+        }
+        
         atual.setValor(valor);
+        System.out.println("Valor no indice " + index + " atualizado para valor: " + valor + "\n");
     }
+    
 
     public void removeIndex(int index) {
         if (index < 0 || index >= size()) {
@@ -90,13 +95,14 @@ public class LinkedList {
     }
 
     public void removePrimeiroValorCorrespondente(int valor) {
-        if (size() == 0) {
+        if (isEmpty()) {
             System.out.println("Não há valor na lista.\n");
             return;
         }
 
         if (cabeca.getValor() == valor) {
             cabeca = cabeca.getProximo();
+            rabo.setProximo(cabeca);
             if (cabeca == null) {
                 rabo = null;
             }
@@ -169,8 +175,8 @@ public class LinkedList {
         return false;
     }
 
-    public boolean isEmpty(){
-        if(cabeca == null){
+    public boolean isEmpty() {
+        if (cabeca == null) {
             return true;
         }
         return false;
@@ -190,45 +196,18 @@ public class LinkedList {
     }
 
     public void mostrarLista() {
+        if (isEmpty()) {
+            System.out.println("Não há valor na lista.\n");
+            return;
+        }
+
         No atual = cabeca;
 
-        for (int i = 0; i < size(); i++) {
-            System.out.println(atual);
+        do {
+            System.out.printf(atual.getValor() + " -> ");
             atual = atual.getProximo();
-        }
-    }
+        } while (atual != cabeca);
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((cabeca == null) ? 0 : cabeca.hashCode());
-        result = prime * result + ((rabo == null) ? 0 : rabo.hashCode());
-        result = prime * result + tamanho;
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        LinkedList other = (LinkedList) obj;
-        if (cabeca == null) {
-            if (other.cabeca != null)
-                return false;
-        } else if (!cabeca.equals(other.cabeca))
-            return false;
-        if (rabo == null) {
-            if (other.rabo != null)
-                return false;
-        } else if (!rabo.equals(other.rabo))
-            return false;
-        if (tamanho != other.tamanho)
-            return false;
-        return true;
+        System.out.println("Volta ao começo");
     }
 }
