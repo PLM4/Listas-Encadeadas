@@ -14,13 +14,17 @@ public class CircularDupla {
 
     public void add(int valor) {
         No novoNo = new No(valor);
-        if (cabeca == null) {
+        if (isEmpty()) {
             cabeca = novoNo;
             rabo = novoNo;
+            cabeca.setAnterior(rabo);
+            rabo.setProximo(cabeca);
         } else {
             rabo.setProximo(novoNo);
             novoNo.setAnterior(rabo);
             rabo = novoNo;
+            cabeca.setAnterior(rabo);
+            rabo.setProximo(cabeca);
         }
         tamanho += 1;
     }
@@ -34,7 +38,8 @@ public class CircularDupla {
         System.out.println("O valor " + cabeca.getValor() + " foi removido com sucesso.\n");
 
         cabeca = cabeca.getProximo();
-        cabeca.setAnterior(null);
+        cabeca.setAnterior(rabo);
+        rabo.setProximo(cabeca);
 
         if (cabeca == null) {
             rabo = null;
@@ -70,9 +75,9 @@ public class CircularDupla {
         if (index == 0) {
             cabeca = cabeca.getProximo();
             if (cabeca != null) {
-                cabeca.setAnterior(null);
+                cabeca.setAnterior(rabo);
             } else {
-                rabo = null;
+                rabo.setProximo(cabeca);
             }
         } else {
             No atual = cabeca;
@@ -104,40 +109,33 @@ public class CircularDupla {
             return;
         }
 
-        if (cabeca.getValor() == valor) {
-            cabeca = cabeca.getProximo();
-            if (cabeca != null) {
-                cabeca.setAnterior(null);
-            } else {
-                rabo = null;
-            }
-            this.tamanho--;
-            System.out.println("O valor " + valor + " foi removido com sucesso.\n");
-            return;
-        }
-
         No atual = cabeca;
 
-        while (atual != null) {
-            if (valor == atual.getValor()) {
+        do {
+            if (atual.getValor() == valor) {
                 No anterior = atual.getAnterior();
                 No proximo = atual.getProximo();
 
-                if (anterior != null) {
+                if (atual == cabeca) {
+                    cabeca = proximo;
+                    rabo.setProximo(cabeca);
+                    cabeca.setAnterior(rabo);
+                } else if (atual == rabo) {
+                    rabo = anterior;
+                    rabo.setProximo(cabeca);
+                    cabeca.setAnterior(rabo);
+                } else {
                     anterior.setProximo(proximo);
+                    proximo.setAnterior(anterior);
                 }
 
-                if (proximo != null) {
-                    proximo.setAnterior(anterior);
-                } else {
-                    rabo = anterior;
-                }
                 this.tamanho--;
                 System.out.println("O valor " + valor + " foi removido com sucesso.\n");
                 return;
             }
             atual = atual.getProximo();
-        }
+        } while (atual != cabeca);
+
         System.out.println("Valor não encontrado na lista.\n");
     }
 
@@ -216,9 +214,10 @@ public class CircularDupla {
     public void mostrarLista() {
         No atual = cabeca;
 
-        for (int i = 0; i < size(); i++) {
-            System.out.println(atual);
+        do {
+            System.out.printf(atual.getValor() + " <-> ");
             atual = atual.getProximo();
-        }
+        } while (atual != cabeca);
+        System.out.println("Volta ao comeco da lista.\n");
     }
 }

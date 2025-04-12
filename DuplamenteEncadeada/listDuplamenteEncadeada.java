@@ -1,12 +1,12 @@
 package DuplamenteEncadeada;
 
-public class LinkedList {
+public class listDuplamenteEncadeada {
 
     private No cabeca;
     private No rabo;
     private int tamanho;
 
-    public LinkedList() {
+    public listDuplamenteEncadeada() {
         cabeca = null;
         rabo = null;
         this.tamanho = 0;
@@ -217,9 +217,10 @@ public class LinkedList {
         No atual = cabeca;
 
         for (int i = 0; i < size(); i++) {
-            System.out.println(atual);
+            System.out.printf(atual.getValor() + " <-> ");
             atual = atual.getProximo();
         }
+        System.out.println();
     }
 
     @Override
@@ -240,7 +241,7 @@ public class LinkedList {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        LinkedList other = (LinkedList) obj;
+        listDuplamenteEncadeada other = (listDuplamenteEncadeada) obj;
         if (cabeca == null) {
             if (other.cabeca != null)
                 return false;
